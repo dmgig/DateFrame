@@ -18,7 +18,7 @@ class DateFrame{
 		$this->end   = date('Y-m-d', strtotime($end))   . ' 23:59:59';
 		
 		$startdiff   = new DateTime($this->start);
-		$enddiff     = new DateTime($this->start);
+		$enddiff     = new DateTime($this->end);
 		$this->diff  = $enddiff->diff($startdiff)->format('%a');
 
 		if($field){
