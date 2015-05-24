@@ -14,6 +14,9 @@ class DateFrame{
 	
 	public function __construct($start, $end, $field = null){
 
+		$this->orig_start = $start;
+		$this->orig_end   = $end;
+		
 		$this->start = date('Y-m-d', strtotime($start)) . ' 00:00:00';
 		$this->end   = date('Y-m-d', strtotime($end))   . ' 23:59:59';
 		
