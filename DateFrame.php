@@ -15,6 +15,9 @@ class DateFrame{
 		$this->orig_start = $start;
 		$this->orig_end   = $end;
 		
+		if(!strtotime($start)) throw new InvalidArgumentException("Used `$start` and it could not be parsed.");
+		if(!strtotime($end))   throw new InvalidArgumentException("Used `$end`   and it could not be parsed.");
+		
 		$this->start = date('Y-m-d', strtotime($start)) . ' 00:00:00';
 		$this->end   = date('Y-m-d', strtotime($end))   . ' 23:59:59';
 		
