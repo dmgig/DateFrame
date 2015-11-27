@@ -1,7 +1,6 @@
 # DateFrame
-DateFrame Class For PHP
 
-DateFrame class to ease generation of SQL BETWEEN clauses
+PHP DateFrame class to ease working with date intervals, and ease generation of SQL BETWEEN clauses
  
 Contructor requires start and end date. 
 
