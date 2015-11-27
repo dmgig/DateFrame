@@ -12,7 +12,46 @@ Each DateFrame can then be *broken into arrays of shorter interval DateFrames* b
 
 ```php
 $by_month = $dateframe->asMonthIntervals(); 
-// $by_month set to array of three DateFrame objects: Jan., Feb., Mar.
+/**
+ * $by_month set to array of three DateFrame objects: Jan., Feb., Mar.
+
+Array
+(
+    [0] => DateFrame Object
+        (
+            [start] => 2015-01-01 00:00:00
+            [end] => 2015-01-31 23:59:59
+            [diff] => 31
+            [criteria] => 
+            [orig_start] => 2015-01-01
+            [orig_end] => 2015-01-31
+            [interval] => 1M
+        )
+
+    [1] => DateFrame Object
+        (
+            [start] => 2015-02-01 00:00:00
+            [end] => 2015-02-28 23:59:59
+            [diff] => 28
+            [criteria] => 
+            [orig_start] => 2015-02-01
+            [orig_end] => 2015-02-28
+            [interval] => 1M
+        )
+
+    [2] => DateFrame Object
+        (
+            [start] => 2015-03-01 00:00:00
+            [end] => 2015-03-31 23:59:59
+            [diff] => 31
+            [criteria] => 
+            [orig_start] => 2015-03-01
+            [orig_end] => 2015-03-31
+            [interval] => 1M
+        )
+
+)
+*/
 ```
 
 Methods to check if DateFrame *contains* date, or DateFrame *overlaps* another DateFrame.
