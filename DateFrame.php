@@ -7,7 +7,7 @@ class DateFrame{
 	
 	public $start;
 	public $end;
-	public $diff;
+	public $days;
 	public $criteria = null;   
 	
 	public function __construct($start, $end, $field = null){
@@ -21,9 +21,9 @@ class DateFrame{
 		$this->start = date('Y-m-d', strtotime($start)) . ' 00:00:00';
 		$this->end   = date('Y-m-d', strtotime($end))   . ' 23:59:59';
 		
-		$startdiff   = new DateTime($this->start);
-		$enddiff     = new DateTime($this->end);
-		$this->diff  = $enddiff->diff($startdiff)->format('%a') + 1;
+		$startday   = new DateTime($this->start);
+		$endday     = new DateTime($this->end);
+		$this->days = $endday->diff($startday)->format('%a') + 1;
 
 		if($field){
 			$this->criteria = self::getCriteriaBetween($field);
