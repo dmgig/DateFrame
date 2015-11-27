@@ -1,6 +1,6 @@
 # DateFrame
 
-PHP DateFrame class to ease working with date intervals, and ease generation of SQL BETWEEN clauses
+PHP DateFrame class to ease working with date intervals (date ranges), and ease generation of SQL BETWEEN clauses
  
 Contructor requires start and end date in any format readable aby PHP's *strtotime* function
 
