@@ -11,7 +11,7 @@ $dateframe = new DateFrame('2015-01-01', '3/31/2015');
 Each DateFrame can then be *broken into arrays of shorter interval DateFrames* broken down by: day, seven days, Sun-Sat weeks, n months, quarters, n years.
 
 ```php
-$by_month = $dateframe->asMonthIntervals(); // returns array of three DateFrame objects, Jan., Feb., Mar.
+$by_month = $dateframe->asMonthIntervals(); // returns array of three DateFrame objects: Jan., Feb., Mar.
 ```
 
 Methods to check if DateFrame *contains* date, or DateFrame *overlaps* another DateFrame.
