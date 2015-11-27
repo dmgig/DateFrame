@@ -6,6 +6,18 @@ Contructor requires start and end date in any format readable aby PHP's *strtoti
 
 ```php
 $dateframe = new DateFrame('2015-01-01', '3/31/2015');
+/**
+ * DateFrame Object
+ * (
+ *   [start] => 2015-01-01 00:00:00
+ *   [end] => 2015-03-31 23:59:59
+ *   [days] => 90
+ *   [criteria] => 
+ *   [orig_start] => 2015-01-01
+ *   [orig_end] => 3/31/2015
+ * )
+ */
+
 ```
 
 Each DateFrame can then be *broken into an array of shorter interval DateFrames* broken down by: day, seven days, Sun-Sat weeks, *n* months, fiscal quarters, *n* years.
@@ -21,7 +33,7 @@ $by_month = $dateframe->asMonthIntervals();
  *       (
  *          [start] => 2015-01-01 00:00:00
  *          [end] => 2015-01-31 23:59:59
- *          [diff] => 31
+ *          [days] => 31
  *          [orig_start] => 2015-01-01
  *          [orig_end] => 2015-01-31
  *          [interval] => 1M
@@ -31,7 +43,7 @@ $by_month = $dateframe->asMonthIntervals();
  *      (
  *          [start] => 2015-02-01 00:00:00
  *          [end] => 2015-02-28 23:59:59
- *          [diff] => 28
+ *          [days] => 28
  *          [orig_start] => 2015-02-01
  *          [orig_end] => 2015-02-28
  *          [interval] => 1M
@@ -41,7 +53,7 @@ $by_month = $dateframe->asMonthIntervals();
  *      (
  *          [start] => 2015-03-01 00:00:00
  *          [end] => 2015-03-31 23:59:59
- *          [diff] => 31
+ *          [days] => 31
  *          [orig_start] => 2015-03-01
  *          [orig_end] => 2015-03-31
  *          [interval] => 1M
@@ -63,7 +75,17 @@ Method to *create SQL BETWEEN clause*
 ```php
 $dateframe = new DateFrame('2015-01-01', '3/31/2015');
 $between = $dateframe->getCriteria('completed_date');
-// $between set to "completed_date BETWEEN '2015-01-01 00:00:00' AND '2015-03-31 23:59:59'"
+/**
+ * DateFrame Object
+ * (
+ *   [start] => 2015-01-01 00:00:00
+ *   [end] => 2015-03-31 23:59:59
+ *   [days] => 90
+ *   [criteria] => completeddate BETWEEN '2015-01-01 00:00:00' AND '2015-03-31 23:59:59'
+ *   [orig_start] => 2015-01-01
+ *   [orig_end] => 3/31/2015
+ * )
+ */
 
 ```
 
