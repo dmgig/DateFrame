@@ -22,7 +22,7 @@ class DateFrame{
 		
 		$startdiff   = new DateTime($this->start);
 		$enddiff     = new DateTime($this->end);
-		$this->diff  = $enddiff->diff($startdiff)->format('%a');
+		$this->diff  = $enddiff->diff($startdiff)->format('%a') + 1;
 
 		if($field){
 			$this->criteria = self::getCriteriaBetween($field);
