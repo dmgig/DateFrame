@@ -9,7 +9,7 @@ Contructor requires start and end date.
 $dateframe = new DateFrame('2015-01-01', '3/31/2015');
 ```
 
-Each DateFrame can then be broken into arrays of shorter interval DateFrames broken down by: day, seven days, Sun-Sat weeks, n months, quarters, n years.
+Each DateFrame can then be *broken into arrays of shorter interval DateFrames* broken down by: day, seven days, Sun-Sat weeks, n months, quarters, n years.
 
 ```php
 $by_month = $dateframe->asMonthIntervals(); // returns array of three DateFrame objects, Jan., Feb., Mar.
@@ -24,7 +24,7 @@ $dateframe2 = new DateFrame('2014-01-01', '3/31/2014');
 $dateframe->overlaps($dateframe2); // equals false
 ```
 
-Method to create SQL BETWEEN clause
+Method to *create SQL BETWEEN clause*
 ```php
 $dateframe = new DateFrame('2015-01-01', '3/31/2015');
 $between = $dateframe->getCriteria('completed_date');
