@@ -10,10 +10,12 @@ class DateFrame{
 	public $days;
 	public $criteria = null;   
 	
-	public function __construct($start, $end, $field = null){
+	public function __construct($start, $end=null, $field = null){
 
-		$this->orig_start = $start;
-		$this->orig_end   = $end;
+		$this->start_orig = $start;
+		// if end is null, use start date
+		if($end == null) $this->end_orig = $start;		
+		else             $this->end_orig = $end; 
 		
 		if(!strtotime($start)) throw new InvalidArgumentException("Used `$start` and it could not be parsed.");
 		if(!strtotime($end))   throw new InvalidArgumentException("Used `$end`   and it could not be parsed.");
