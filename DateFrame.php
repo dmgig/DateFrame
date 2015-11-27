@@ -223,6 +223,29 @@ class DateFrame{
 		return $period;
 	}
 
+	/**
+	 * @param year_start
+	 * @param  date
+	 * @return int [1-4] corresponding to quarter
+	 */
+	private static function inQuarter($year_start=1, $date=false){
+
+		if(!$date) $date = date('Y-m-d');
+
+		$unix = strtotime($date);
+		if(!$unix) throw new InvalidArgumentException("Invalid date. Used $date. Must be PHP strtotime readable.");
+
+		$year = date('Y', $unix);
+
+		foreach(static::businessQuarters() as $k => $quarter){
+			$start = strtotime("{$year}-" . $quarter[0]);
+			$end   = strtotime("{$year}-" . $quarter[1]);
+			if($unix >= $start && $unix <= $end)
+				return $k;
+		}
+		// should be impossible to get here.
+		throw new Exception('Unknown error.');
+	}  
 
 	/**
 	 * get date of first day of quarter which less than or equal to DateFrame start date
@@ -230,8 +253,8 @@ class DateFrame{
 	 */	
 	private function firstOfQuarter(){
 		$first_of_Q = null;
-		$Q = dateClass::inQuarter($this->start);
-		$business_quarters = dateClass::businessQuarters();
+		$Q = static::inQuarter($this->start);
+		$business_quarters = static::businessQuarters();
 		$qtr_dates = $business_quarters[$Q];
 		$year = date('Y', strtotime($this->start));
 		$first_of_Q = $year . '-' . $qtr_dates[0];
