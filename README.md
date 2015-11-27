@@ -8,7 +8,7 @@ Contructor requires start and end date in any format readable aby PHP's *strtoti
 $dateframe = new DateFrame('2015-01-01', '3/31/2015');
 ```
 
-Each DateFrame can then be *broken into arrays of shorter interval DateFrames* broken down by: day, seven days, Sun-Sat weeks, n months, quarters, n years.
+Each DateFrame can then be *broken into an array of shorter interval DateFrames* broken down by: day, seven days, Sun-Sat weeks, *n* months, fiscal quarters, *n* years.
 
 ```php
 $by_month = $dateframe->asMonthIntervals(); 
