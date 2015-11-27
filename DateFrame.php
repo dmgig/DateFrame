@@ -29,15 +29,46 @@ class DateFrame{
 		}
 	}
 
+	public static function create($start, $end, $field = null){
+		return new DateFrame($start, $end, $field);
+	}	
+
+	/**
+	 * check wether date is contained within this DateFrame
+	 * @param   datestring
+	 * @returns boolean
+	 */		
+	public function contains($date){
+		$date = strtotime($date);
+		if(!$date) throw new InvalidArgumentException("Used `$date` and it could not be parsed.");
+		return ($date >= strtotime($this->start) && $date <= strtotime($this->end));
+	}
+	
+	/**
+	 * check wether dateframe is overlapped by passed DateFrame
+	 * @param   dateframe
+	 * @returns boolean
+	 */		
+	public function overlaps($dateframe){
+		if(($this->start <= $dateframe->end) && ($this->end >= $dateframe->start)){
+			return true;
+		}
+		return false;
+	}	
+
 	public function setCriteria($field){
 		$this->criteria = "$field BETWEEN '{$this->start}' AND '{$this->end}'";
 	}
-	
+
 	public function getCriteria($field){
 		$this->setCriteria($field);
 		return $this->criteria;
 	}
-	
+
+	/**
+	 * split current DateFrame into array of DateFrames in intervals of one day.
+	 * @returns array array of DateFrames
+	 */	
 	public function asDayIntervals(){
 
 		$intervals = array();		
@@ -50,6 +81,10 @@ class DateFrame{
 		return $intervals;
 	}
 
+	/**
+	 * split this into intervals of seven days, with no regard to sun-sat weeks. last will be trimmed at this->end date
+	 * @returns array array of DateFrames
+	 */
 	public function asSevenDayIntervals(){
 
 		$intervals = array();
@@ -65,6 +100,12 @@ class DateFrame{
 		return $intervals;
 	}
 	
+	/**
+	 * split current DateFrame into array of DateFrames of seven day intervals, by natural Sun-Sat week.
+	 * First "week" will contain this->start through next saturday, and will continue in sun-Sat weeks from there. Last week will be trimmed at this->end
+	 *	  wether Sat or not.
+	 * @returns array array of DateFrames
+	 */		
 	public function asWeekIntervals(){
 	
 		$intervals = array();
@@ -93,16 +134,66 @@ class DateFrame{
 		return $intervals;
 	}
 	
-	public function asMonthIntervals(){
+	/**
+	 * split current DateFrame into array of DateFrames of month long intervals, by calendar month or months.
+	 * @param number of months in interval
+	 * @returns array array of DateFrames
+	 */		
+	public function asMonthIntervals($months=1){
 
 		$intervals = array();
-		$period = $this->getDatePeriod('P1M');
+		$period = $this->getDatePeriod("P{$months}M");
 		
 		foreach($period as $k => $date){
 			$start = $date->format('Y-m-d');
-			$end   = $date->add(new DateInterval('P1M'))->sub(new DateInterval('P1D'))->format('Y-m-d');
+			$end   = $date->add(new DateInterval("P{$months}M"))->sub(new DateInterval('P1D'))->format('Y-m-d');
 			if($end > $this->end) $end = $this->end;
 			$dateframe = new DateFrame($start, $end);
+			$dateframe->interval = "{$months}M";
+			$intervals[] = $dateframe;
+		}
+		return $intervals;
+	}
+
+	/**
+	 * split current DateFrame into array of DateFrames corresponding to quarters (Jan-Mar, Apr-Jun, Jul-Sep, Oct-Dec).
+	 * @returns array array of DateFrames
+	 */		
+	public function asQuarterIntervals(){
+
+		$intervals = array();
+		$period = $this->getDatePeriod('P3M', $this->firstOfQuarter());
+		
+		foreach($period as $k => $date){
+			$start = $date->format('Y-m-d');
+			$end   = $date->add(new DateInterval('P3M'))->sub(new DateInterval('P1D'))->format('Y-m-d');
+			if($start < $this->start) $start = $this->start;
+			if($end   > $this->end  ) $end   = $this->end;
+			$dateframe = new DateFrame($start, $end);
+			$dateframe->interval = '1Q';
+			$intervals[] = $dateframe;
+		}
+		return $intervals;
+	}	
+
+	/**
+	 * split current DateFrame into array of DateFrames corresponding to full years.
+	 * Similar to months, if start date is not 1st of a year, first dateframe will go from start date to end of year.
+	 * @param int number of years in interval
+	 * @returns array array of DateFrames
+	 */		
+	public function asYearIntervals($years=1){
+
+		$intervals = array();
+		$period = $this->getDatePeriod("P{$years}Y", $this->firstOfYear());
+		
+		foreach($period as $k => $date){
+			$start = $date->format('Y-m-d');
+			$end   = $date->add(new DateInterval("P{$years}Y"))->sub(new DateInterval('P1D'))->format('Y-m-d');
+			if($start < $this->start) $start = $this->start;
+			if($end   > $this->end  ) $end   = $this->end;
+			$dateframe = new DateFrame($start, $end);
+			$dateframe->interval = "{$years}Y";
 			$intervals[] = $dateframe;
 		}
 		return $intervals;
@@ -130,6 +221,32 @@ class DateFrame{
 		);
 		
 		return $period;
+	}
+
+
+	/**
+	 * get date of first day of quarter which less than or equal to DateFrame start date
+	 * @returns datestring
+	 */	
+	private function firstOfQuarter(){
+		$first_of_Q = null;
+		$Q = dateClass::inQuarter($this->start);
+		$business_quarters = dateClass::businessQuarters();
+		$qtr_dates = $business_quarters[$Q];
+		$year = date('Y', strtotime($this->start));
+		$first_of_Q = $year . '-' . $qtr_dates[0];
+		return $first_of_Q;
+	}
+	
+	/**
+	 * get date of first day of year which less than or equal to DateFrame start date
+	 * @returns datestring
+	 */	
+	private function firstOfYear(){
+		$first_of_year = null;
+		$year = date('Y', strtotime($this->start));
+		$first_of_year = $year . '-01-01';
+		return $first_of_year;
 	}
 	
 }
