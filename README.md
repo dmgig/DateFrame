@@ -2,7 +2,7 @@
 
 PHP DateFrame class to ease working with date intervals, and ease generation of SQL BETWEEN clauses
  
-Contructor requires start and end date. 
+Contructor requires start and end date in any format readable aby PHP's *strtotime* function
 
 ```php
 $dateframe = new DateFrame('2015-01-01', '3/31/2015');
