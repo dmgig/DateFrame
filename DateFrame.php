@@ -1,7 +1,7 @@
 <?php
 
 /**
- * DateFrame class tfor working with date intervals and producting SQL BETWEEN statements
+ * DateFrame class for working with date intervals and producting SQL BETWEEN statements
  */
 class DateFrame{
 	
